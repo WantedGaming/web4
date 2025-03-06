@@ -193,12 +193,12 @@ $grades = fetchAll($gradeQuery);
                                 $iconPath = "../assets/img/icons/{$armor['iconId']}.png";
                                 $iconSrc = file_exists($iconPath) ? $iconPath : "https://placehold.co/600x400/transparent/ff4d01?text=No\nImage";
                                 ?>
-                                <a href="armor-list.php?id=<?php echo $armor['item_id']; ?>">
+                                <a href="armor-detail.php?id=<?php echo $armor['item_id']; ?>">
                                     <img src="<?php echo $iconSrc; ?>" alt="Armor Icon" class="armor-icon">
                                 </a>
                             </td>
                             <td>
-                                <a href="armor-list.php?id=<?php echo $armor['item_id']; ?>" class="armor-name-link">
+                                <a href="armor-detail.php?id=<?php echo $armor['item_id']; ?>" class="armor-name-link">
                                     <?php echo h($armor['desc_en']); ?>
                                 </a>
                             </td>

@@ -5,6 +5,14 @@ All notable changes to the Game Database project will be documented in this file
 Default image placeholder for missing icon:
 https://placehold.co/600x400/transparent/ff4d01?text=No\nImage
 
+## [1.6.0] - 2025-03-06
+
+### Added
+- Created armor-detail.php page to display detailed information about individual armor pieces
+- Implemented comprehensive armor detail view with sections for basic stats, class requirements, restrictions, bonuses, drops, and locations
+- Added styling for armor detail page with responsive design matching the weapon detail page
+- Updated armor-list.php to link to the new armor-detail.php page
+
 ## [1.5.9] - 2025-03-06
 
 ### Changed
