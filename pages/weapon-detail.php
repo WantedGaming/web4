@@ -77,8 +77,7 @@ foreach ($classColumns as $column => $className) {
 <section class="section">
     <div class="container">
 <div class="breadcrumb">
-            <a href="weapons.php">Weapons</a> &gt; 
-            <a href="weapon-list.php">Weapon List</a> &gt; 
+            <a href="weapon-list.php">Weapons</a> &gt; 
             <span><?php echo h(cleanWeaponName($weapon['desc_en'])); ?></span>
         </div>
         

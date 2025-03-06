@@ -5,6 +5,29 @@ All notable changes to the Game Database project will be documented in this file
 Default image placeholder for missing icon:
 https://placehold.co/600x400/transparent/ff4d01?text=No\nImage
 
+## [1.5.9] - 2025-03-06
+
+### Changed
+- Updated armor-list.php to make the entire armor card clickable (both icon and name)
+- Added styling for armor-name-link similar to weapon-name-link
+- Updated the armor card on the homepage to make the entire card clickable, similar to the weapon card
+- These changes make the armor elements consistent with the weapon elements for better user experience
+
+## [1.5.8] - 2025-03-06
+
+### Changed
+- Simplified site structure by removing weapons.php, keeping only weapon-list.php
+- This change makes the weapons section consistent with the armor section
+
+## [1.5.7] - 2025-03-06
+
+### Added
+- Created armor-list.php page to display a filterable list of armor items
+- Added links to armor-list.php in the top navigation and main card on the homepage
+- Implemented filtering by class, type, material, and grade
+- Added pagination for browsing through large sets of armor data
+- Implemented placeholder images for armor items without icons
+
 ## [1.5.6] - 2025-03-06
 
 ### Changed

@@ -41,21 +41,23 @@ require_once 'includes/header.php';
                     </div>
                 </div>
             </a>
-            <div class="card">
-                <div class="card-image">
-                    <img src="assets/img/placeholders/armor_placeholder.png" alt="Armor" class="card-img">
+            <a href="pages/armor-list.php" class="card-wrapper">
+                <div class="card">
+                    <div class="card-image">
+                        <img src="assets/img/placeholders/armor_placeholder.png" alt="Armor" class="card-img">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Armor</h3>
+                        <p class="card-text">Explore all armor types including helmets, body armor, shields, and magical robes. Find the best protection for your character.</p>
+                        <div class="card-link">
+                            View Armor
+                            <svg class="svg-icon card-link-icon" viewBox="0 0 24 24" width="16" height="16">
+                                <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                            </svg>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-content">
-                    <h3 class="card-title">Armor</h3>
-                    <p class="card-text">Explore all armor types including helmets, body armor, shields, and magical robes. Find the best protection for your character.</p>
-                    <a href="pages/armor.php" class="card-link">
-                        View Armor
-                        <svg class="svg-icon card-link-icon" viewBox="0 0 24 24" width="16" height="16">
-                            <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
-                        </svg>
-                    </a>
-                </div>
-            </div>
+            </a>
             <div class="card">
                 <div class="card-image">
                     <img src="assets/img/placeholders/monster_placeholder.png" alt="Monsters" class="card-img">

@@ -1,12 +1,12 @@
 <?php
 /**
- * Weapons page
+ * Armor page
  */
 
 // Set page variables
-$pageTitle = 'Weapons';
-$pageDescription = 'Browse all weapons in the database with detailed information.';
-$currentPage = 'weapons';
+$pageTitle = 'Armor';
+$pageDescription = 'Browse all armor in the database with detailed information.';
+$currentPage = 'armor';
 
 // Include header and required files
 require_once '../includes/header.php';
@@ -24,121 +24,92 @@ $typeFilter = isset($_GET['type']) ? $_GET['type'] : '';
 $materialFilter = isset($_GET['material']) ? $_GET['material'] : '';
 $gradeFilter = isset($_GET['grade']) ? $_GET['grade'] : '';
 
-try {
-    // Build filter conditions
-    $filterConditions = '';
-    $filterParams = [];
+// Build filter conditions
+$filterConditions = '';
+$filterParams = [];
 
-    if (!empty($classFilter)) {
-        // Add class filter condition based on the use_* columns
-        $filterConditions .= " AND use_$classFilter = 1";
-    }
-
-    if (!empty($typeFilter)) {
-        $filterConditions .= " AND type = :type";
-        $filterParams[':type'] = $typeFilter;
-    }
-
-    if (!empty($materialFilter)) {
-        $filterConditions .= " AND material = :material";
-        $filterParams[':material'] = $materialFilter;
-    }
-
-    if (!empty($gradeFilter)) {
-        $filterConditions .= " AND itemGrade = :grade";
-        $filterParams[':grade'] = $gradeFilter;
-    }
-
-    // Build filter query string for pagination links
-    $filterQueryString = '';
-    if (!empty($classFilter)) $filterQueryString .= "&class=" . urlencode($classFilter);
-    if (!empty($typeFilter)) $filterQueryString .= "&type=" . urlencode($typeFilter);
-    if (!empty($materialFilter)) $filterQueryString .= "&material=" . urlencode($materialFilter);
-    if (!empty($gradeFilter)) $filterQueryString .= "&grade=" . urlencode($gradeFilter);
-
-    // Get total count for pagination
-    $countQuery = "SELECT COUNT(*) FROM weapon WHERE 1=1" . $filterConditions;
-    $totalItems = fetchValue($countQuery, $filterParams);
-    $totalPages = ceil($totalItems / $itemsPerPage);
-
-    // Get weapons data
-    $query = "SELECT item_id, iconId, desc_en, type, material, dmg_small, dmg_large, safenchant 
-              FROM weapon 
-              WHERE 1=1" . $filterConditions . "
-              ORDER BY item_id ASC
-              LIMIT " . $itemsPerPage . " OFFSET " . $offset;
-    $weapons = fetchAll($query, $filterParams);
-
-    // Get weapon categories
-    $categoryQuery = "SELECT type, COUNT(*) as count FROM weapon GROUP BY type ORDER BY type";
-    $categories = fetchAll($categoryQuery);
-
-    // Helper function to remove Korean text from material
-    function removeMaterialKoreanText($material) {
-        // Remove text in parentheses which contains Korean characters
-        return preg_replace('/\([^)]*\)/', '', $material);
-    }
-
-    // Get unique values for filter dropdowns
-    $classOptions = [
-        'royal' => 'Royal',
-        'knight' => 'Knight',
-        'elf' => 'Elf',
-        'mage' => 'Mage',
-        'darkelf' => 'Dark Elf',
-        'dragonknight' => 'Dragon Knight',
-        'illusionist' => 'Illusionist',
-        'warrior' => 'Warrior',
-        'fencer' => 'Fencer',
-        'lancer' => 'Lancer'
-    ];
-
-    $typeQuery = "SELECT DISTINCT type FROM weapon ORDER BY type";
-    $types = fetchAll($typeQuery);
-
-    $materialQuery = "SELECT DISTINCT material FROM weapon ORDER BY material";
-    $materials = fetchAll($materialQuery);
-
-    $gradeQuery = "SELECT DISTINCT itemGrade FROM weapon ORDER BY FIELD(itemGrade, 'ONLY', 'MYTH', 'LEGEND', 'HERO', 'RARE', 'ADVANC', 'NORMAL')";
-    $grades = fetchAll($gradeQuery);
-} catch (Exception $e) {
-    // Log the error
-    error_log("Error in weapons.php: " . $e->getMessage());
-    
-    // Set empty arrays to prevent undefined variable errors
-    $weapons = [];
-    $categories = [];
-    $types = [];
-    $materials = [];
-    $grades = [];
-    $totalItems = 0;
-    $totalPages = 0;
+if (!empty($classFilter)) {
+    // Add class filter condition based on the use_* columns
+    $filterConditions .= " AND use_$classFilter = 1";
 }
+
+if (!empty($typeFilter)) {
+    $filterConditions .= " AND type = :type";
+    $filterParams[':type'] = $typeFilter;
+}
+
+if (!empty($materialFilter)) {
+    $filterConditions .= " AND material = :material";
+    $filterParams[':material'] = $materialFilter;
+}
+
+if (!empty($gradeFilter)) {
+    $filterConditions .= " AND grade = :grade";
+    $filterParams[':grade'] = $gradeFilter;
+}
+
+// Build filter query string for pagination links
+$filterQueryString = '';
+if (!empty($classFilter)) $filterQueryString .= "&class=" . urlencode($classFilter);
+if (!empty($typeFilter)) $filterQueryString .= "&type=" . urlencode($typeFilter);
+if (!empty($materialFilter)) $filterQueryString .= "&material=" . urlencode($materialFilter);
+if (!empty($gradeFilter)) $filterQueryString .= "&grade=" . urlencode($gradeFilter);
+
+// Get total count for pagination
+$countQuery = "SELECT COUNT(*) FROM armor WHERE 1=1" . $filterConditions;
+$totalItems = fetchValue($countQuery, $filterParams);
+$totalPages = ceil($totalItems / $itemsPerPage);
+
+// Get armor data
+$query = "SELECT item_id, iconId, desc_en, type, material, ac, grade, weight 
+          FROM armor 
+          WHERE 1=1" . $filterConditions . "
+          ORDER BY item_id ASC
+          LIMIT " . $itemsPerPage . " OFFSET " . $offset;
+$armorItems = fetchAll($query, $filterParams);
+
+// Helper function to remove Korean text from material
+function removeMaterialKoreanText($material) {
+    // Remove text in parentheses which contains Korean characters
+    return preg_replace('/\([^)]*\)/', '', $material);
+}
+
+// Get unique values for filter dropdowns
+$classOptions = [
+    'royal' => 'Royal',
+    'knight' => 'Knight',
+    'elf' => 'Elf',
+    'mage' => 'Mage',
+    'darkelf' => 'Dark Elf',
+    'dragonknight' => 'Dragon Knight',
+    'illusionist' => 'Illusionist',
+    'warrior' => 'Warrior',
+    'fencer' => 'Fencer',
+    'lancer' => 'Lancer'
+];
+
+$typeQuery = "SELECT DISTINCT type FROM armor ORDER BY type";
+$types = fetchAll($typeQuery);
+
+$materialQuery = "SELECT DISTINCT material FROM armor ORDER BY material";
+$materials = fetchAll($materialQuery);
+
+$gradeQuery = "SELECT DISTINCT grade FROM armor ORDER BY FIELD(grade, 'ONLY', 'MYTH', 'LEGEND', 'HERO', 'RARE', 'ADVANC', 'NORMAL')";
+$grades = fetchAll($gradeQuery);
 ?>
 
 <section class="hero">
     <div class="container">
-        <h1 class="hero-title">Weapon Database</h1>
-        <p class="hero-subtitle">Browse all weapons with detailed information including stats and requirements.</p>
+        <h1 class="hero-title">Armor Database</h1>
+        <p class="hero-subtitle">Browse all armor with detailed information including stats and requirements.</p>
     </div>
 </section>
 
 <section class="section">
     <div class="container">
-        <!-- Weapon Categories -->
-        <h2 class="section-title">Weapon Categories</h2>
-        <div class="category-grid">
-            <?php foreach ($categories as $category): ?>
-                <a href="?type=<?php echo urlencode($category['type']); ?>" class="category-card">
-                    <h3 class="category-title"><?php echo h($category['type']); ?></h3>
-                    <p class="category-count"><?php echo h($category['count']); ?> weapons</p>
-                </a>
-            <?php endforeach; ?>
-        </div>
-        
         <!-- Filter Form -->
         <div class="filter-container">
-            <h2 class="section-title">Filter Weapons</h2>
+            <h2 class="section-title">Filter Armor</h2>
             <form method="GET" action="" class="filter-form">
                 <div class="filter-row">
                     <div class="filter-group">
@@ -182,8 +153,8 @@ try {
                         <select name="grade" id="grade">
                             <option value="">All Grades</option>
                             <?php foreach ($grades as $grade): ?>
-                                <option value="<?php echo h($grade['itemGrade']); ?>" <?php echo $gradeFilter === $grade['itemGrade'] ? 'selected' : ''; ?>>
-                                    <?php echo h($grade['itemGrade']); ?>
+                                <option value="<?php echo h($grade['grade']); ?>" <?php echo $gradeFilter === $grade['grade'] ? 'selected' : ''; ?>>
+                                    <?php echo h($grade['grade']); ?>
                                 </option>
                             <?php endforeach; ?>
                         </select>
@@ -192,40 +163,50 @@ try {
                 
                 <div class="filter-actions">
                     <button type="submit" class="filter-button">Apply Filters</button>
-                    <a href="weapons.php" class="reset-button">Reset Filters</a>
+                    <a href="armor.php" class="reset-button">Reset Filters</a>
                 </div>
             </form>
         </div>
         
-        <!-- Weapons Table -->
-        <h2 class="section-title">Weapons (<?php echo $totalItems; ?> found)</h2>
+        <!-- Armor Table -->
+        <h2 class="section-title">Armor (<?php echo $totalItems; ?> found)</h2>
         
-        <?php if (count($weapons) > 0): ?>
+        <?php if (count($armorItems) > 0): ?>
             <div class="table-responsive">
-                <table class="weapons-table">
+                <table class="armor-table">
                     <thead>
                         <tr>
                             <th>Icon</th>
                             <th>Name</th>
                             <th>Type</th>
                             <th>Material</th>
-                            <th>Small</th>
-                            <th>Large</th>
-                            <th>Safe</th>
+                            <th>AC</th>
+                            <th>Weight</th>
+                            <th>Grade</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($weapons as $weapon): ?>
+                        <?php foreach ($armorItems as $armor): ?>
                         <tr>
                             <td class="icon-cell">
-                                <img src="../assets/img/icons/<?php echo $weapon['iconId']; ?>.png" alt="Weapon Icon" class="weapon-icon">
+                                <?php 
+                                $iconPath = "../assets/img/icons/{$armor['iconId']}.png";
+                                $iconSrc = file_exists($iconPath) ? $iconPath : "https://placehold.co/600x400/transparent/ff4d01?text=No\nImage";
+                                ?>
+                                <a href="armor-list.php?id=<?php echo $armor['item_id']; ?>">
+                                    <img src="<?php echo $iconSrc; ?>" alt="Armor Icon" class="armor-icon">
+                                </a>
                             </td>
-                            <td><?php echo h($weapon['desc_en']); ?></td>
-                            <td><?php echo h($weapon['type']); ?></td>
-                            <td><?php echo h(removeMaterialKoreanText($weapon['material'])); ?></td>
-                            <td><?php echo h($weapon['dmg_small']); ?></td>
-                            <td><?php echo h($weapon['dmg_large']); ?></td>
-                            <td><?php echo h($weapon['safenchant']); ?></td>
+                            <td>
+                                <a href="armor-list.php?id=<?php echo $armor['item_id']; ?>" class="armor-name-link">
+                                    <?php echo h($armor['desc_en']); ?>
+                                </a>
+                            </td>
+                            <td><?php echo h($armor['type']); ?></td>
+                            <td><?php echo h(removeMaterialKoreanText($armor['material'])); ?></td>
+                            <td><?php echo h($armor['ac']); ?></td>
+                            <td><?php echo h($armor['weight']); ?></td>
+                            <td><?php echo h($armor['grade']); ?></td>
                         </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -238,14 +219,14 @@ try {
             <?php endif; ?>
         <?php else: ?>
             <div class="no-results">
-                <p>No weapons found matching your criteria. Please try different filters.</p>
+                <p>No armor found matching your criteria. Please try different filters.</p>
             </div>
         <?php endif; ?>
     </div>
 </section>
 
 <style>
-/* Additional styles for the weapon list page */
+/* Additional styles for the armor list page */
 .filter-container {
     background-color: var(--bg-color-secondary);
     border-radius: 12px;
@@ -326,25 +307,25 @@ try {
     margin-bottom: 30px;
 }
 
-.weapons-table {
+.armor-table {
     width: 100%;
     border-collapse: collapse;
     font-size: 0.9rem;
 }
 
-.weapons-table th, .weapons-table td {
+.armor-table th, .armor-table td {
     padding: 12px 15px;
     text-align: left;
     border-bottom: 1px solid var(--border-color);
 }
 
-.weapons-table th {
+.armor-table th {
     background-color: var(--bg-color-secondary);
     font-weight: 600;
     color: var(--text-primary);
 }
 
-.weapons-table tr:hover {
+.armor-table tr:hover {
     background-color: var(--bg-color-secondary);
 }
 
@@ -353,7 +334,7 @@ try {
     text-align: center;
 }
 
-.weapon-icon {
+.armor-icon {
     width: 32px;
     height: 32px;
     object-fit: contain;
@@ -397,40 +378,14 @@ try {
     color: var(--text-secondary);
 }
 
-/* Category grid styles */
-.category-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 20px;
-    margin-bottom: 40px;
-}
-
-.category-card {
-    background-color: var(--bg-color-secondary);
-    border-radius: 8px;
-    padding: 15px;
-    text-align: center;
-    border: 1px solid var(--border-color);
-    transition: all 0.2s ease;
-    text-decoration: none;
+.armor-name-link {
     color: var(--text-primary);
+    text-decoration: none;
+    transition: color 0.2s ease;
 }
 
-.category-card:hover {
-    transform: translateY(-3px);
-    border-color: var(--accent-color);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-}
-
-.category-title {
-    font-size: 1.1rem;
-    font-weight: 600;
-    margin-bottom: 5px;
-}
-
-.category-count {
-    color: var(--text-secondary);
-    font-size: 0.9rem;
+.armor-name-link:hover {
+    color: var(--accent-color);
 }
 </style>
 

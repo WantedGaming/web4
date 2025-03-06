@@ -29,7 +29,7 @@ require_once __DIR__ . '/../config/config.php';
                 <nav class="nav">
                     <a href="<?php echo $siteConfig['site_url']; ?>" class="nav-item <?php echo $currentPage === 'home' ? 'active' : ''; ?>">Home</a>
                     <a href="<?php echo $siteConfig['site_url']; ?>/pages/weapon-list.php" class="nav-item <?php echo $currentPage === 'weapons' ? 'active' : ''; ?>">Weapons</a>
-                    <a href="<?php echo $siteConfig['site_url']; ?>/pages/armor.php" class="nav-item <?php echo $currentPage === 'armor' ? 'active' : ''; ?>">Armor</a>
+                    <a href="<?php echo $siteConfig['site_url']; ?>/pages/armor-list.php" class="nav-item <?php echo $currentPage === 'armor' ? 'active' : ''; ?>">Armor</a>
                     <a href="<?php echo $siteConfig['site_url']; ?>/pages/monsters.php" class="nav-item <?php echo $currentPage === 'monsters' ? 'active' : ''; ?>">Monsters</a>
                     <a href="<?php echo $siteConfig['site_url']; ?>/pages/locations.php" class="nav-item <?php echo $currentPage === 'locations' ? 'active' : ''; ?>">Locations</a>
                 </nav>
